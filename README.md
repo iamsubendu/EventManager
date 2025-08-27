@@ -51,6 +51,7 @@ EventManager/
 ## ✨ Features Implemented
 
 ### Core Requirements ✅
+
 - **Event Management**: Create, view, and list events
 - **Attendee Management**: Add/remove attendees with duplicate email prevention
 - **GraphQL API**: Full schema with queries and mutations
@@ -58,6 +59,7 @@ EventManager/
 - **Modern UI**: TailwindCSS with responsive design
 
 ### Bonus Features ✅
+
 - **Advanced Form Validation**: Date restrictions, email uniqueness
 - **Toast Notifications**: Professional error handling and user feedback
 - **Optimistic UI**: Smooth loading states and transitions
@@ -65,6 +67,7 @@ EventManager/
 - **Mobile Responsive**: Works perfectly on all device sizes
 
 ### Technical Excellence ✅
+
 - **Clean Architecture**: Modular, maintainable code structure
 - **Error Handling**: Comprehensive error management with user-friendly messages
 - **Performance**: Optimized queries and efficient state management
