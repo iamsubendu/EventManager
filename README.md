@@ -1,36 +1,133 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Take-Home Assignment: Mini Event Manager
 
-## Getting Started
+## Goal
 
-First, run the development server:
+Build a minimal Event Manager using Next.js (App Router), React, TypeScript, and GraphQL. The app should allow users to:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- View a list of events
+- Create a new event
+- View event details (including attendees)
+- Add/remove attendees
+
+## Requirements
+
+### 1. Backend (GraphQL)
+
+- Use a mock GraphQL API (Apollo Server, or similar) with an in-memory for storage.
+- You are responsible for designing the GraphQL schema (types, queries, mutations) needed to support the required features.
+
+### 2. Frontend (Next.js)
+
+- Pages:
+  - /events — List all events
+  - /events/new — Form to create a event
+  - /events/[id] — Event details, attendee management
+- Features:
+  - List events with title, date, and attendee count
+  - Create event (title and date required)
+  - View event details (show attendees)
+  - Add attendee (name and email, email optional)
+  - Remove attendee
+- Tech:
+  - TypeScript everywhere
+  - Use Apollo Client or React Query for data fetching
+  - Use React hooks and functional components
+  - Minimal styling (TailwindCSS preferred)
+  - Use Formik for forms
+  - Use Zustand for state management (if needed)
+  - Use Zod or Yup for validation (if needed)
+  - Use Headless UI for any UI components (modals, dialogs, etc.) (if needed)
+
+### 3. Entity Relationship Design
+
+In addition to the working app, provide a short document (ENTITIES.md) where you
+describe a realistic data model for the following relationships:
+
+- Users can create and manage events (create, view, update, delete)
+- Attendees can attend events, but they are not Users
+- Each Event can have one or more Tags (e.g. “Internal”, “Public”, “Team Offsite”)
+- Attendees may attend multiple events, and their RSVP status should be tracked
+
+What to include:
+
+- Entity names
+- Attributes for each entity
+- Types of each attribute (e.g., string, number, date, reference)
+- Any "join" entities if neede
+- Any constraints or unique identifiers
+- Any indexes or performance considerations
+- Any assumptions made about the data model
+
+For example:
+
+```markdown
+# Entities
+
+Dog
+
+- name: string
+- age: number (age of the dog in years)
+- ownerId: string (ID of the owner, references User)
+
+User
+
+- name: string
+- email: string (unique email address)
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 4. Bonus (Optional)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+This is ONLY if you have extra time after completing the main features. It is preferred that you spend extra time on ensuring the code is maintainable and organized and rather than implementing these features.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Form validation when creating events and adding attendees
+- Optimistic UI for attendee add/remove
+- Responsive design
+- Provide a Dockerfile for the app
 
-## Learn More
+### 4. Deliverables
 
-To learn more about Next.js, take a look at the following resources:
+- GitHub repo (public link) or zip file (delete the .git and node_modules directories if zipping)
+  - Source code for the Next.js app
+  - Source code for the GraphQL server
+  - Any additional scripts or configuration files needed to run the app
+  - ENTITIES.md with the data model design
+  - SETUP.md with setup instructions and running instructions
+  - NOTES.md with any assumptions made and any known issues
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 5. Time Expectation
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+The core assignment should take around 5–6 hours. Please prioritize functionality and clarity. Don’t worry about perfect CSS or scalability. You’ll have 3 days to complete it, but if you need a bit more time just let me know.
 
-## Deploy on Vercel
+## What We’re Looking For
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+This assignment is meant to give us a signal on how you think and structure projects. It’s not about perfection.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+> **The goal is not only to make it work, but to write code that is clear, maintainable, and easy for others to understand and build upon.**
+
+We’re focusing on:
+
+- That the core features work as described
+- Clear, maintainable code structure and logical file organization (e.g., pretend this project will be worked on by multiple people and will grow over time)
+- Good use of TypeScript features (types, interfaces, generics) (e.g., no `any` types)
+- Thoughtful naming of variables, types, and components
+- A clean, extensible GraphQL schema
+- A well-reasoned and understandable ENTITIES.md file
+
+We’re not focusing on:
+
+- Handling millions of users
+- Pixel-perfect UI
+- Advanced animations, spinners, or transitions
+- Using every optional tech (Zustand, Headless UI, etc.) unless helpful
+
+## Use of AI Tools
+
+You’re welcome to use AI tools like ChatGPT, Copilot, or similar. Note, On the job you will be able to use services such as ChatGPT and Gemini. You may also be able to use AI code editors such as Cursor and Windsurf, though it's not a guarantee
+
+That said, we’re still looking to understand how you think and how you’d approach a real-world task, so please make sure your submission reflects your own understanding. Be ready to walk us through your code and decisions in a follow-up conversation if needed.
+
+## Questions?
+
+If you have any questions about the assignment, please feel free to reach out to Ryan or me at `aeskandari@snapchat.com`. We’re happy to clarify any requirements or provide additional context.
+
+## Good luck!
