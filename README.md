@@ -44,7 +44,6 @@ EventManager/
     ├── ENTITIES.md         # Data model design
     ├── SETUP.md            # Detailed setup instructions
     ├── NOTES.md            # Implementation notes
-    ├── README.md           # Application-specific readme
     └── package.json        # Dependencies and scripts
 ```
 
@@ -86,9 +85,9 @@ EventManager/
 
 ## 📖 Documentation
 
-- **[SETUP.md](./event-manager/SETUP.md)** - Complete setup and running instructions
-- **[ENTITIES.md](./event-manager/ENTITIES.md)** - Comprehensive data model design
-- **[NOTES.md](./event-manager/NOTES.md)** - Implementation decisions and assumptions
+- **[SETUP.md](./SETUP.md)** - Complete setup and running instructions
+- **[ENTITIES.md](./ENTITIES.md)** - Comprehensive data model design
+- **[NOTES.md](./NOTES.md)** - Implementation decisions and assumptions
 
 ## 🎨 Design Highlights
 
