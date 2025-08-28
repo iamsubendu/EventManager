@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useMutation } from "@apollo/client";
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import toast from "react-hot-toast";
 import {
@@ -13,6 +13,22 @@ import {
 import { Attendee, CreateAttendeeInput } from "@/lib/types";
 import { PlusIcon, TrashIcon } from "@/components/ui/icons";
 import { getErrorMessage } from "@/lib/error-utils";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Card } from "@/components/ui/card";
+
+interface FormikFieldProps {
+  field: {
+    name: string;
+    value: string;
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    onBlur: (e: React.FocusEvent<HTMLInputElement>) => void;
+  };
+  meta: {
+    touched: boolean;
+    error?: string;
+  };
+}
 
 interface Props {
   eventId: string;
@@ -169,139 +185,105 @@ export function AttendeeManager({ eventId, attendees }: Props) {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <h3 className="text-lg font-medium text-gray-900">
+    <div className="space-y-4 sm:space-y-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <h3 className="text-base sm:text-lg font-medium text-gray-900">
           Attendees ({attendees.length})
         </h3>
-        <button
+        <Button
+          variant="ghost"
           onClick={() => setShowForm(!showForm)}
-          className="inline-flex items-center px-3 py-2 border border-transparent text-sm font-medium rounded-md text-blue-600 bg-blue-100 hover:bg-blue-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          className="bg-blue-100 hover:bg-blue-200"
         >
           <PlusIcon className="w-4 h-4 mr-1" />
           Add Attendee
-        </button>
+        </Button>
       </div>
 
       {showForm && (
-        <div className="bg-gradient-to-br from-blue-50 to-indigo-50 p-6 rounded-xl border border-blue-100">
+        <Card className="bg-gradient-to-br from-blue-50 to-indigo-50 border-blue-100">
           <Formik
             initialValues={initialValues}
             validationSchema={createValidationSchema(attendees)}
             onSubmit={handleSubmit}
           >
             {({ isSubmitting }) => (
-              <Form className="space-y-6">
-                <div>
-                  <label
-                    htmlFor="name"
-                    className="block text-sm font-semibold text-gray-800 mb-2"
-                  >
-                    👤 Attendee Name *
-                  </label>
-                  <Field
-                    type="text"
-                    name="name"
-                    id="name"
-                    className="block w-full px-4 py-3 border border-blue-200 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-white/80 focus:bg-white text-gray-700"
-                    placeholder="Enter attendee's full name"
-                  />
-                  <ErrorMessage
-                    name="name"
-                    component="div"
-                    className="mt-2 text-sm text-red-600 flex items-center"
-                  />
-                </div>
+              <Form className="space-y-4 sm:space-y-6">
+                <Field name="name">
+                  {({ field, meta }: FormikFieldProps) => (
+                    <Input
+                      {...field}
+                      type="text"
+                      label="👤 Attendee Name *"
+                      placeholder="Enter attendee's full name"
+                      className="border-blue-200 bg-white/80 focus:bg-white"
+                      error={
+                        meta.touched && meta.error ? meta.error : undefined
+                      }
+                    />
+                  )}
+                </Field>
 
-                <div>
-                  <label
-                    htmlFor="email"
-                    className="block text-sm font-semibold text-gray-800 mb-2"
-                  >
-                    📧 Email Address (optional)
-                  </label>
-                  <Field
-                    type="email"
-                    name="email"
-                    id="email"
-                    className="block w-full px-4 py-3 border border-blue-200 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-white/80 focus:bg-white text-gray-700"
-                    placeholder="attendee@example.com"
-                  />
-                  <ErrorMessage
-                    name="email"
-                    component="div"
-                    className="mt-2 text-sm text-red-600 flex items-center"
-                  />
-                  <p className="mt-2 text-xs text-blue-600">
-                    💡 Each email can only be used once per event
-                  </p>
-                </div>
+                <Field name="email">
+                  {({ field, meta }: FormikFieldProps) => (
+                    <Input
+                      {...field}
+                      type="email"
+                      label="📧 Email Address (optional)"
+                      placeholder="attendee@example.com"
+                      className="border-blue-200 bg-white/80 focus:bg-white"
+                      error={
+                        meta.touched && meta.error ? meta.error : undefined
+                      }
+                      helperText="💡 Each email can only be used once per event"
+                    />
+                  )}
+                </Field>
 
-                <div className="flex space-x-4 pt-4 border-t border-blue-100">
-                  <button
+                <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4 pt-4 border-t border-blue-100">
+                  <Button
                     type="button"
+                    variant="secondary"
                     onClick={() => setShowForm(false)}
-                    className="flex-1 py-3 px-6 border border-blue-200 rounded-xl shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200"
+                    className="w-full sm:flex-1 border-blue-200"
                   >
                     Cancel
-                  </button>
-                  <button
+                  </Button>
+                  <Button
                     type="submit"
+                    variant="primary"
                     disabled={isSubmitting || creating}
-                    className="flex-1 py-3 px-6 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-medium rounded-xl shadow-lg hover:shadow-xl hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 transform hover:-translate-y-0.5 disabled:hover:transform-none"
+                    isLoading={isSubmitting || creating}
+                    className="w-full sm:flex-1"
                   >
-                    {isSubmitting || creating ? (
-                      <span className="flex items-center justify-center">
-                        <svg
-                          className="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                        >
-                          <circle
-                            className="opacity-25"
-                            cx="12"
-                            cy="12"
-                            r="10"
-                            stroke="currentColor"
-                            strokeWidth="4"
-                          ></circle>
-                          <path
-                            className="opacity-75"
-                            fill="currentColor"
-                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                          ></path>
-                        </svg>
-                        Adding...
-                      </span>
-                    ) : (
-                      "Add Attendee"
-                    )}
-                  </button>
+                    {isSubmitting || creating ? "Adding..." : "Add Attendee"}
+                  </Button>
                 </div>
               </Form>
             )}
           </Formik>
-        </div>
+        </Card>
       )}
 
       {attendees.length === 0 ? (
-        <div className="text-center py-8 text-gray-500">
-          <p>No attendees yet. Add the first one!</p>
+        <div className="text-center py-6 sm:py-8 text-gray-500">
+          <p className="text-sm sm:text-base">
+            No attendees yet. Add the first one!
+          </p>
         </div>
       ) : (
-        <div className="bg-white shadow overflow-hidden sm:rounded-md">
+        <div className="bg-white shadow overflow-hidden rounded-lg sm:rounded-xl">
           <ul className="divide-y divide-gray-200">
             {attendees.map((attendee) => (
-              <li key={attendee.id} className="px-6 py-4">
-                <div className="flex items-center justify-between">
-                  <div className="flex-1">
-                    <div className="flex items-center">
-                      <p className="text-sm font-medium text-gray-900">
+              <li key={attendee.id} className="px-4 py-3 sm:px-6 sm:py-4">
+                <div className="flex items-start sm:items-center justify-between gap-3">
+                  <div className="flex-1 min-w-0">
+                    <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
+                      <p className="text-sm font-medium text-gray-900 truncate">
                         {attendee.name}
                       </p>
                       {attendee.email && (
-                        <p className="ml-2 text-sm text-gray-500">
+                        <p className="text-xs sm:text-sm text-gray-500 truncate">
                           ({attendee.email})
                         </p>
                       )}
@@ -310,13 +292,15 @@ export function AttendeeManager({ eventId, attendees }: Props) {
                       Added {new Date(attendee.createdAt).toLocaleDateString()}
                     </p>
                   </div>
-                  <button
+                  <Button
+                    variant="ghost"
+                    size="sm"
                     onClick={() => handleDelete(attendee.id, attendee.name)}
-                    className="ml-4 p-1 text-red-600 hover:text-red-800 focus:outline-none"
+                    className="flex-shrink-0 text-red-600 hover:text-red-800 hover:bg-red-50 p-1.5"
                     title="Remove attendee"
                   >
                     <TrashIcon className="w-4 h-4" />
-                  </button>
+                  </Button>
                 </div>
               </li>
             ))}

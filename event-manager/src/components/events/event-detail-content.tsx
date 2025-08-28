@@ -8,7 +8,7 @@ import { Header } from "@/components/layout/header";
 import { AttendeeManager } from "@/components/attendees/attendee-manager";
 import { GET_EVENT } from "@/lib/graphql/queries";
 import { EventWithAttendees } from "@/lib/types";
-import { ArrowLeftIcon, CalendarIcon } from "@/components/ui/icons";
+import { CalendarIcon } from "@/components/ui/icons";
 
 interface Props {
   eventId: string;
@@ -95,47 +95,37 @@ export function EventDetailPageContent({ eventId }: Props) {
   const event = data.event;
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-gray-50">
       <Header />
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="mb-8">
-          <Link
-            href="/events"
-            className="inline-flex items-center text-sm font-medium text-blue-600 hover:text-blue-500 mb-4"
-          >
-            <ArrowLeftIcon className="w-4 h-4 mr-1" />
-            Back to Events
-          </Link>
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
+        <div className="bg-white shadow rounded-lg sm:rounded-xl p-4 sm:p-6 mb-6 sm:mb-8">
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4 break-words">
+            {event.title}
+          </h1>
 
-          <div className="bg-white shadow rounded-lg p-6 mb-8">
-            <h1 className="text-3xl font-bold text-gray-900 mb-4">
-              {event.title}
-            </h1>
+          <div className="flex items-center text-gray-600 mb-4">
+            <CalendarIcon className="w-4 h-4 sm:w-5 sm:h-5 mr-2 flex-shrink-0" />
+            <span className="text-sm sm:text-base">
+              {new Date(event.date).toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+                hour: "2-digit",
+                minute: "2-digit",
+              })}
+            </span>
+          </div>
 
-            <div className="flex items-center text-gray-600 mb-4">
-              <CalendarIcon className="w-5 h-5 mr-2" />
-              <span>
-                {new Date(event.date).toLocaleDateString("en-US", {
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                  hour: "2-digit",
-                  minute: "2-digit",
-                })}
-              </span>
-            </div>
-
-            <div className="text-sm text-gray-500">
-              <p>Created: {new Date(event.createdAt).toLocaleDateString()}</p>
-              {event.updatedAt !== event.createdAt && (
-                <p>Updated: {new Date(event.updatedAt).toLocaleDateString()}</p>
-              )}
-            </div>
+          <div className="text-xs sm:text-sm text-gray-500 space-y-1">
+            <p>Created: {new Date(event.createdAt).toLocaleDateString()}</p>
+            {event.updatedAt !== event.createdAt && (
+              <p>Updated: {new Date(event.updatedAt).toLocaleDateString()}</p>
+            )}
           </div>
         </div>
 
-        <div className="bg-white shadow rounded-lg p-6">
+        <div className="bg-white shadow rounded-lg sm:rounded-xl p-4 sm:p-6">
           <AttendeeManager eventId={event.id} attendees={event.attendees} />
         </div>
       </main>
