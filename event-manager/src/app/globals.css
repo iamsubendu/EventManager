@@ -98,9 +98,7 @@ input[type="datetime-local"]::-webkit-datetime-edit-ampm-field {
   padding: 0 0.125rem;
 }
 
-/* Mobile-specific improvements */
 @media (max-width: 640px) {
-  /* Ensure proper touch targets on mobile */
   button,
   a,
   input,
@@ -109,19 +107,16 @@ input[type="datetime-local"]::-webkit-datetime-edit-ampm-field {
     min-height: 44px;
   }
 
-  /* Better text sizing for mobile */
   html {
     font-size: 16px;
   }
 
-  /* Prevent zoom on input focus */
   input,
   textarea,
   select {
     font-size: 16px !important;
   }
 
-  /* Ensure proper scrolling on mobile */
   body {
     overflow-x: hidden;
     overflow-y: auto;
@@ -129,32 +124,27 @@ input[type="datetime-local"]::-webkit-datetime-edit-ampm-field {
   }
 }
 
-/* Ensure no extra spacing on pages */
 body,
 html {
   margin: 0;
   padding: 0;
 }
 
-/* Compact layout for form pages */
 main {
   display: block;
 }
 
-/* Override body background for specific pages */
 .page-create-event {
   background: #f9fafb !important;
   min-height: auto !important;
 }
 
-/* Ensure no extra height on mobile */
 @media (max-width: 640px) {
   .page-create-event {
     min-height: auto !important;
   }
 }
 
-/* Line clamp utility for text truncation */
 .line-clamp-1 {
   overflow: hidden;
   display: -webkit-box;
@@ -176,7 +166,6 @@ main {
   -webkit-line-clamp: 3;
 }
 
-/* Extra small breakpoint for very small screens */
 @media (max-width: 475px) {
   .xs\:hidden {
     display: none;

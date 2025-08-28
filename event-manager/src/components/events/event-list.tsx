@@ -8,7 +8,6 @@ import { GET_EVENTS } from "@/lib/graphql/queries";
 import { Event } from "@/lib/types";
 import { CalendarIcon, UsersIcon } from "@/components/ui/icons";
 
-// Memoized EventCard component for better performance
 const EventCard = memo(({ event }: { event: Event }) => {
   const formattedDate = useMemo(() => {
     return new Date(event.date).toLocaleDateString("en-US", {
@@ -36,7 +35,6 @@ const EventCard = memo(({ event }: { event: Event }) => {
       className="group block bg-white/70 backdrop-blur-sm p-4 sm:p-6 rounded-xl sm:rounded-2xl shadow-lg border border-gray-100 hover:shadow-2xl hover:bg-white transition-all duration-300 transform hover:-translate-y-1"
     >
       <div className="space-y-3 sm:space-y-4">
-        {/* Event Header */}
         <div className="flex items-start justify-between">
           <div className="p-2 sm:p-3 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-lg sm:rounded-xl shadow-lg group-hover:shadow-xl transition-all duration-200 flex-shrink-0">
             <CalendarIcon className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
@@ -46,14 +44,12 @@ const EventCard = memo(({ event }: { event: Event }) => {
           </span>
         </div>
 
-        {/* Event Title */}
         <div>
           <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors line-clamp-2">
             {event.title}
           </h3>
         </div>
 
-        {/* Event Details */}
         <div className="space-y-2 sm:space-y-3">
           <div className="flex items-center text-gray-600">
             <div className="p-1 sm:p-1.5 bg-blue-50 rounded-lg mr-2 sm:mr-3 flex-shrink-0">
@@ -74,7 +70,6 @@ const EventCard = memo(({ event }: { event: Event }) => {
           </div>
         </div>
 
-        {/* Hover Indicator */}
         <div className="flex items-center justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-200">
           <span className="text-xs text-blue-600 font-medium">
             View details →
@@ -87,7 +82,6 @@ const EventCard = memo(({ event }: { event: Event }) => {
 
 EventCard.displayName = "EventCard";
 
-// Memoized Loading Skeleton component
 const LoadingSkeleton = memo(() => {
   const skeletonItems = useMemo(() => [...Array(6)], []);
 
@@ -125,8 +119,6 @@ LoadingSkeleton.displayName = "LoadingSkeleton";
 
 function EventListComponent() {
   const { data, loading, error } = useQuery<{ events: Event[] }>(GET_EVENTS);
-
-  // Memoized error handler
   const handleError = useCallback(() => {
     if (error) {
       toast.error("Failed to load events. Please refresh the page.", {
@@ -138,8 +130,6 @@ function EventListComponent() {
   useEffect(() => {
     handleError();
   }, [handleError]);
-
-  // Memoized empty state component
   const EmptyState = useMemo(
     () => (
       <div className="text-center py-12 sm:py-20 px-4">
@@ -164,7 +154,6 @@ function EventListComponent() {
     []
   );
 
-  // Memoized error state component
   const ErrorState = useMemo(
     () => (
       <div className="bg-red-50 border border-red-200 rounded-md p-4">
@@ -174,7 +163,6 @@ function EventListComponent() {
     [error?.message]
   );
 
-  // Memoized events grid
   const EventsGrid = useMemo(() => {
     if (!data?.events) return null;
 
@@ -202,5 +190,4 @@ function EventListComponent() {
   return EventsGrid;
 }
 
-// Export memoized component
 export const EventList = memo(EventListComponent);

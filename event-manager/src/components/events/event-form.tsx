@@ -122,7 +122,6 @@ export function EventForm() {
     eventDate: string;
     eventTime: string;
   }) => {
-    // Dismiss any existing toasts for this action
     toast.dismiss("create-event-loading");
 
     const toastId = toast.loading("Creating your event...", {
@@ -134,7 +133,6 @@ export function EventForm() {
     });
 
     try {
-      // Combine date and time into a single datetime
       const time24h = convertTo24Hour(values.eventTime);
       const combinedDateTime = `${values.eventDate}T${time24h}:00`;
 
@@ -212,7 +210,6 @@ export function EventForm() {
               </Field>
             </div>
 
-            {/* Button container with minimal spacing */}
             <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4 pt-4 mt-4 border-t border-gray-100">
               <Button
                 type="button"

@@ -6,8 +6,6 @@ import { CalendarIcon, PlusIcon, ArrowLeftIcon } from "@/components/ui/icons";
 
 export function Header() {
   const pathname = usePathname();
-
-  // Show "Back to Events" on any event-related page (except the main events list)
   const isEventPage = pathname.startsWith("/events") && pathname !== "/events";
 
   return (

@@ -1,7 +1,5 @@
 import { database } from "../database";
 import { CreateEventInput, CreateAttendeeInput } from "../types";
-
-// Input validation utilities
 function validateEventInput(input: CreateEventInput): void {
   if (!input.title || typeof input.title !== "string") {
     throw new Error("Event title is required and must be a string");
@@ -79,14 +77,11 @@ export const resolvers = {
 
   Mutation: {
     createEvent: (_: unknown, { input }: { input: CreateEventInput }) => {
-      // Validate and sanitize input
       validateEventInput(input);
-
       const sanitizedInput = {
         title: sanitizeString(input.title),
         date: input.date,
       };
-
       return database.createEvent(sanitizedInput);
     },
 
@@ -94,26 +89,19 @@ export const resolvers = {
       if (!id || typeof id !== "string") {
         throw new Error("Event ID is required and must be a string");
       }
-
       const event = database.getEventById(id);
       if (!event) {
         throw new Error("Event not found");
       }
-
       return database.deleteEvent(id);
     },
 
     createAttendee: (_: unknown, { input }: { input: CreateAttendeeInput }) => {
-      // Validate and sanitize input
       validateAttendeeInput(input);
-
-      // Check if event exists
       const event = database.getEventById(input.eventId);
       if (!event) {
         throw new Error("Event not found");
       }
-
-      // Check for duplicate email if provided
       if (input.email && input.email.length > 0) {
         const existingAttendees = database.getAttendeesByEventId(input.eventId);
         const duplicateEmail = existingAttendees.find(
@@ -121,20 +109,17 @@ export const resolvers = {
             attendee.email &&
             attendee.email.toLowerCase() === input.email!.toLowerCase()
         );
-
         if (duplicateEmail) {
           throw new Error(
             "An attendee with this email is already registered for this event"
           );
         }
       }
-
       const sanitizedInput = {
         name: sanitizeString(input.name),
         email: input.email ? sanitizeString(input.email) : input.email,
         eventId: input.eventId,
       };
-
       return database.createAttendee(sanitizedInput);
     },
 
@@ -142,12 +127,10 @@ export const resolvers = {
       if (!id || typeof id !== "string") {
         throw new Error("Attendee ID is required and must be a string");
       }
-
       const attendee = database.getAttendeeById(id);
       if (!attendee) {
         throw new Error("Attendee not found");
       }
-
       return database.deleteAttendee(id);
     },
   },

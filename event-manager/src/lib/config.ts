@@ -1,14 +1,8 @@
-// Application configuration
 export const config = {
-  // Environment
   isDevelopment: process.env.NODE_ENV === "development",
   isProduction: process.env.NODE_ENV === "production",
-
-  // Application URLs
   appUrl: process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000",
   graphqlUrl: process.env.NEXT_PUBLIC_GRAPHQL_URL || "/api/graphql",
-
-  // GraphQL Configuration
   graphql: {
     introspection:
       process.env.GRAPHQL_INTROSPECTION === "true" ||
@@ -17,26 +11,18 @@ export const config = {
       process.env.GRAPHQL_PLAYGROUND === "true" ||
       process.env.NODE_ENV === "development",
   },
-
-  // Database Configuration (for future migration)
   database: {
     url: process.env.DATABASE_URL,
     mongodb: process.env.MONGODB_URI,
   },
-
-  // Security Configuration
   security: {
     jwtSecret: process.env.JWT_SECRET || "development-secret-key",
     bcryptSaltRounds: parseInt(process.env.BCRYPT_SALT_ROUNDS || "12", 10),
   },
-
-  // Rate Limiting
   rateLimiting: {
     maxRequests: parseInt(process.env.RATE_LIMIT_MAX_REQUESTS || "100", 10),
-    windowMs: parseInt(process.env.RATE_LIMIT_WINDOW_MS || "900000", 10), // 15 minutes
+    windowMs: parseInt(process.env.RATE_LIMIT_WINDOW_MS || "900000", 10),
   },
-
-  // External Services
   services: {
     sendgrid: {
       apiKey: process.env.SENDGRID_API_KEY,
@@ -53,14 +39,10 @@ export const config = {
       vercelAnalyticsId: process.env.NEXT_PUBLIC_VERCEL_ANALYTICS_ID,
     },
   },
-
-  // Caching
   cache: {
     redisUrl: process.env.REDIS_URL,
     redisPassword: process.env.REDIS_PASSWORD,
   },
-
-  // File Upload
   upload: {
     cloudinary: {
       cloudName: process.env.CLOUDINARY_CLOUD_NAME,
@@ -70,17 +52,10 @@ export const config = {
   },
 } as const;
 
-// Validation for required environment variables in production
 export function validateConfig() {
   if (config.isProduction) {
-    const requiredVars: string[] = [
-      // Add required production environment variables here
-      // 'DATABASE_URL',
-      // 'JWT_SECRET',
-    ];
-
+    const requiredVars: string[] = [];
     const missingVars = requiredVars.filter((varName) => !process.env[varName]);
-
     if (missingVars.length > 0) {
       throw new Error(
         `Missing required environment variables in production: ${missingVars.join(
@@ -91,7 +66,6 @@ export function validateConfig() {
   }
 }
 
-// Initialize configuration validation
 if (config.isProduction) {
   validateConfig();
 }

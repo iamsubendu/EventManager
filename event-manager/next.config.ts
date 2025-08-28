@@ -1,7 +1,6 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // Performance optimizations
   experimental: {
     optimizePackageImports: [
       "@apollo/client",
@@ -11,22 +10,16 @@ const nextConfig: NextConfig = {
     ],
   },
 
-  // Enable compression
   compress: true,
-
-  // Enable static optimization
   trailingSlash: false,
 
-  // Image optimization
   images: {
     formats: ["image/webp", "image/avif"],
-    minimumCacheTTL: 60 * 60 * 24 * 7, // 7 days
+    minimumCacheTTL: 60 * 60 * 24 * 7,
   },
 
-  // Bundle analyzer (only in development)
   ...(process.env.ANALYZE === "true" && {
     webpack: (config) => {
-      // Dynamically import bundle analyzer only when needed
       // eslint-disable-next-line @typescript-eslint/no-require-imports
       const BundleAnalyzerPlugin = require("@next/bundle-analyzer");
       config.plugins?.push(
@@ -38,11 +31,9 @@ const nextConfig: NextConfig = {
     },
   }),
 
-  // Production optimizations
   poweredByHeader: false,
   reactStrictMode: true,
 
-  // Headers for security and caching
   async headers() {
     return [
       {

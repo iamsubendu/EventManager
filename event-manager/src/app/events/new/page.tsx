@@ -6,14 +6,10 @@ import { EventForm } from "@/components/events/event-form";
 
 export default function NewEventPage() {
   useEffect(() => {
-    // Override body styles for this page
     const originalBackground = document.body.style.background;
     const originalMinHeight = document.body.style.minHeight;
-
     document.body.style.background = "#f9fafb";
     document.body.style.minHeight = "auto";
-
-    // Cleanup on unmount
     return () => {
       document.body.style.background = originalBackground;
       document.body.style.minHeight = originalMinHeight;

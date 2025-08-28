@@ -1,4 +1,3 @@
-// SVG Icons as reusable components
 interface IconProps {
   className?: string;
 }

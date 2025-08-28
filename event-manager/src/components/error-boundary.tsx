@@ -32,14 +32,6 @@ class ErrorBoundary extends Component<Props, State> {
       error,
       errorInfo,
     });
-
-    // Log error to console in development
-    if (process.env.NODE_ENV === "development") {
-      console.error("ErrorBoundary caught an error:", error, errorInfo);
-    }
-
-    // In production, you would send this to an error tracking service
-    // Example: Sentry.captureException(error, { extra: errorInfo });
   }
 
   handleReset = () => {
@@ -52,12 +44,10 @@ class ErrorBoundary extends Component<Props, State> {
 
   render() {
     if (this.state.hasError) {
-      // Custom fallback UI
       if (this.props.fallback) {
         return this.props.fallback;
       }
 
-      // Default error UI
       return (
         <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
           <div className="max-w-md w-full bg-white rounded-xl shadow-lg p-6 text-center">

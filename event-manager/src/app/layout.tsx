@@ -38,6 +38,10 @@ export default function RootLayout({
             {children}
             <Toaster
               position="top-right"
+              containerStyle={{
+                top: "80px",
+                right: "16px",
+              }}
               toastOptions={{
                 duration: 4000,
                 style: {
@@ -50,6 +54,7 @@ export default function RootLayout({
                   padding: "16px",
                   fontSize: "14px",
                   fontWeight: "500",
+                  zIndex: "9999",
                 },
                 success: {
                   iconTheme: {

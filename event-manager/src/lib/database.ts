@@ -1,4 +1,3 @@
-// In-memory database for the Event Manager
 import {
   Event,
   Attendee,
@@ -17,7 +16,6 @@ class InMemoryDatabase {
   }
 
   private seedData() {
-    // Seed with some initial events
     const now = new Date().toISOString();
 
     const event1: Event = {
@@ -26,7 +24,7 @@ class InMemoryDatabase {
       date: "2024-01-15T10:00:00.000Z",
       createdAt: now,
       updatedAt: now,
-      attendeeCount: 0, // Will be updated after seeding attendees
+      attendeeCount: 0,
     };
 
     const event2: Event = {
@@ -35,7 +33,7 @@ class InMemoryDatabase {
       date: "2024-02-01T14:00:00.000Z",
       createdAt: now,
       updatedAt: now,
-      attendeeCount: 0, // Will be updated after seeding attendees
+      attendeeCount: 0,
     };
 
     this.events = [event1, event2];
@@ -67,8 +65,6 @@ class InMemoryDatabase {
 
     this.attendees = [attendee1, attendee2, attendee3];
     this.attendeeIdCounter = 4;
-
-    // Update attendee counts
     this.updateAttendeeCount("1");
     this.updateAttendeeCount("2");
   }
@@ -82,7 +78,6 @@ class InMemoryDatabase {
     }
   }
 
-  // Event operations
   getAllEvents(): Event[] {
     return [...this.events];
   }
@@ -112,14 +107,12 @@ class InMemoryDatabase {
     if (index === -1) return false;
 
     this.events.splice(index, 1);
-    // Also remove all attendees for this event
     this.attendees = this.attendees.filter(
       (attendee) => attendee.eventId !== id
     );
     return true;
   }
 
-  // Attendee operations
   getAttendeesByEventId(eventId: string): Attendee[] {
     return this.attendees.filter((attendee) => attendee.eventId === eventId);
   }
@@ -160,5 +153,4 @@ class InMemoryDatabase {
   }
 }
 
-// Export a singleton instance
 export const database = new InMemoryDatabase();
