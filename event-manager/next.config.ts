@@ -10,6 +10,9 @@ const nextConfig: NextConfig = {
     ],
   },
 
+  // Enable standalone output for Docker
+  output: "standalone",
+
   compress: true,
   trailingSlash: false,
 

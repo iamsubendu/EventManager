@@ -12,6 +12,50 @@ Before you begin, ensure you have the following installed:
 
 ## Installation
 
+You can run this application in two ways: **Docker** (recommended) or **Local Development**.
+
+### Option 1: Docker Installation (Recommended)
+
+1. **Install Docker Desktop** (if not already installed):
+
+   - Download from [docker.com/products/docker-desktop](https://www.docker.com/products/docker-desktop/)
+   - Install and restart your computer if prompted
+   - Start Docker Desktop and wait for it to be ready
+
+2. **Clone the repository** (if from GitHub):
+
+   ```bash
+   git clone https://github.com/iamsubendu/EventManager.git
+   cd EventManager
+   ```
+
+   Or if you have the zip file, extract it and navigate to the `EventManager` directory.
+
+3. **Ensure Docker Desktop is running**:
+
+   ```bash
+   # Verify Docker is ready
+   docker --version
+   docker ps
+   ```
+
+4. **Start with Docker Compose**:
+
+   ```bash
+   # Build and run the application
+   docker-compose up --build
+   ```
+
+   The application will be available at `http://localhost:3000`
+
+5. **Stop the application**:
+
+   ```bash
+   docker-compose down
+   ```
+
+### Option 2: Local Development Installation
+
 1. **Clone the repository** (if from GitHub):
 
    ```bash
@@ -68,6 +112,172 @@ npm run build
 # Start the production server
 npm start
 ```
+
+### Docker Deployment (Recommended)
+
+The application includes Docker configuration for containerized deployment. All Docker files are located in the root directory.
+
+#### Prerequisites for Docker
+
+- **Docker Desktop** (version 20.0 or higher) - Download from [docker.com](https://www.docker.com/products/docker-desktop/)
+- **Docker Compose** (included with Docker Desktop)
+
+**IMPORTANT**: Before running any Docker commands, ensure Docker Desktop is running:
+
+1. **Start Docker Desktop**:
+
+   - **Windows**: Search "Docker Desktop" in Start Menu and open it
+   - **Mac**: Open Docker Desktop from Applications
+   - **Linux**: Start Docker service: `sudo systemctl start docker`
+
+2. **Wait for Docker to be ready**:
+
+   - Look for whale icon in system tray (Windows/Mac)
+   - Wait for "Docker Desktop is running" message
+   - This can take 1-2 minutes on first startup
+
+3. **Verify Docker is running**:
+
+   ```bash
+   docker --version
+   docker-compose --version
+   docker ps  # Should show running containers (may be empty)
+   ```
+
+4. **Test Docker works** (optional):
+   ```bash
+   docker run hello-world
+   ```
+
+#### Quick Start with Docker
+
+1. **Navigate to the root directory** (EventManager/):
+
+   ```bash
+   cd EventManager
+   ```
+
+   ⚠️ **IMPORTANT**: You must be in the ROOT `EventManager/` directory, NOT the `event-manager/` subdirectory!
+
+2. **Verify you're in the correct directory**:
+
+   ```bash
+   # Check current directory contents - you should see:
+   ls -la
+   # Expected: Dockerfile, docker-compose.yml, event-manager/ folder, README.md, etc.
+
+   # If you see src/ folder instead, you're in the wrong directory:
+   cd ..  # Go up one level to the root
+   ```
+
+3. **Ensure Docker Desktop is running** (CRITICAL STEP):
+
+   ```bash
+   # Check if Docker is running - this should work without errors:
+   docker ps
+
+   # If you get connection errors, start Docker Desktop and wait
+   ```
+
+4. **Build and run with Docker Compose**:
+
+   ```bash
+   docker-compose up --build
+   ```
+
+   The application will be available at `http://localhost:3000`
+
+5. **Stop the application**:
+   ```bash
+   docker-compose down
+   ```
+
+#### Manual Docker Commands
+
+If you prefer using Docker directly:
+
+```bash
+# Build the Docker image
+docker build -t event-manager .
+
+# Run the container
+docker run -p 3000:3000 event-manager
+
+# Run in background with restart policy
+docker run -d -p 3000:3000 --restart unless-stopped --name event-manager event-manager
+
+# Stop and remove the container
+docker stop event-manager
+docker rm event-manager
+```
+
+#### Docker Development Workflow
+
+1. **Development with live reload** (run from EventManager/ root):
+
+   ```bash
+   # Start the container in detached mode
+   docker-compose up -d --build
+
+   # View logs
+   docker-compose logs -f
+
+   # Make changes to code (container will auto-restart)
+
+   # Rebuild after major changes
+   docker-compose down
+   docker-compose up --build
+   ```
+
+2. **Health check monitoring**:
+
+   ```bash
+   # Check container health
+   docker-compose ps
+
+   # Test health endpoint directly
+   curl http://localhost:3000/api/health
+   ```
+
+3. **Container management**:
+
+   ```bash
+   # View running containers
+   docker ps
+
+   # Access container shell
+   docker exec -it eventmanager-event-manager-1 sh
+
+   # View container logs
+   docker logs eventmanager-event-manager-1
+   ```
+
+#### Production Docker Deployment
+
+For production environments:
+
+```bash
+# Build optimized production image
+docker build -t event-manager:production .
+
+# Run with production settings
+docker run -d \
+  -p 3000:3000 \
+  -e NODE_ENV=production \
+  -e NEXT_TELEMETRY_DISABLED=1 \
+  --restart unless-stopped \
+  --name event-manager-prod \
+  event-manager:production
+```
+
+#### Docker Features
+
+- **Multi-stage build** for optimized image size (~100MB)
+- **Non-root user** (nextjs:nodejs) for security
+- **Health checks** at `/api/health` endpoint
+- **Standalone Next.js output** for better performance
+- **Auto-restart** policy for high availability
+- **Environment variable** configuration
 
 ### Other Available Scripts
 
@@ -171,7 +381,82 @@ Currently uses an in-memory database that resets on server restart. For producti
 
 ## Troubleshooting
 
-### Common Issues
+### Docker Issues
+
+1. **Wrong directory error** (Most Common):
+
+   ```bash
+   # ERROR: You're running from event-manager/ instead of EventManager/
+   # SOLUTION: Navigate to root directory
+   cd ..
+   ls -la  # Should see: Dockerfile, docker-compose.yml, event-manager/
+   docker-compose up --build
+   ```
+
+2. **Docker daemon not running** (Your current issue):
+
+   ```bash
+   # WINDOWS: Start Docker Desktop application
+   # - Open Docker Desktop from Start Menu
+   # - Wait for Docker to fully start (whale icon in system tray)
+   # - Look for "Docker Desktop is running" message
+
+   # LINUX: Start Docker service
+   sudo systemctl start docker
+
+   # Verify Docker is running
+   docker --version
+   docker ps
+
+   # If Docker Desktop is starting, wait and try again:
+   docker-compose up --build
+   ```
+
+3. **Port 3000 already in use (Docker)**:
+
+   ```bash
+   # Use a different port
+   docker run -p 3001:3000 event-manager
+
+   # Or modify docker-compose.yml
+   ports:
+     - "3001:3000"
+   ```
+
+4. **Docker build failures**:
+
+   ```bash
+   # Clean Docker cache
+   docker system prune -a
+
+   # Rebuild without cache
+   docker build --no-cache -t event-manager .
+
+   # If you get Apollo Client/React compatibility errors:
+   cd event-manager
+   npm install @apollo/client@3.11.8 rxjs --legacy-peer-deps
+   cd ..
+   docker-compose up --build
+   ```
+
+5. **Container health check failures**:
+
+   ```bash
+   # Check container logs
+   docker-compose logs event-manager
+
+   # Test health endpoint manually
+   curl http://localhost:3000/api/health
+   ```
+
+6. **Permission denied errors (Linux)**:
+   ```bash
+   # Add user to docker group
+   sudo usermod -aG docker $USER
+   # Log out and back in
+   ```
+
+### Local Development Issues
 
 1. **Port 3000 already in use**:
 
@@ -183,7 +468,7 @@ Currently uses an in-memory database that resets on server restart. For producti
 2. **Module not found errors**:
 
    ```bash
-   # Clear node_modules and reinstall
+   # Clear node_modules and reinstall (from event-manager/ directory)
    rm -rf node_modules package-lock.json
    npm install
    ```
@@ -191,13 +476,13 @@ Currently uses an in-memory database that resets on server restart. For producti
 3. **TypeScript errors**:
 
    ```bash
-   # Run type checking
+   # Run type checking (from event-manager/ directory)
    npx tsc --noEmit
    ```
 
 4. **Build failures**:
    ```bash
-   # Clear Next.js cache
+   # Clear Next.js cache (from event-manager/ directory)
    rm -rf .next
    npm run build
    ```
@@ -220,10 +505,43 @@ Currently uses an in-memory database that resets on server restart. For producti
 
 The application is ready for deployment to:
 
+- **Docker** (containerized deployment)
 - **Vercel** (recommended for Next.js applications)
 - **Netlify**
 - **Railway**
 - **Any Node.js hosting platform**
+- **Kubernetes** (using the provided Docker image)
+
+### Docker Deployment Options
+
+1. **Local Docker**:
+
+   ```bash
+   docker build -t event-manager .
+   docker run -p 3000:3000 event-manager
+   ```
+
+2. **Docker Compose** (recommended):
+
+   ```bash
+   docker-compose up -d --build
+   ```
+
+3. **Production Docker with custom settings**:
+   ```bash
+   docker run -p 3000:3000 \
+     -e NODE_ENV=production \
+     -e NEXT_TELEMETRY_DISABLED=1 \
+     --restart unless-stopped \
+     event-manager
+   ```
+
+### Container Features
+
+- **Health checks** at `/api/health`
+- **Non-root user** for security
+- **Optimized image size** with multi-stage build
+- **Standalone Next.js output** for better performance
 
 For production deployment, consider:
 
@@ -231,6 +549,7 @@ For production deployment, consider:
 2. Replacing the in-memory database with a persistent solution
 3. Configuring error tracking and monitoring
 4. Setting up CI/CD pipelines
+5. Using container orchestration (Docker Swarm, Kubernetes)
 
 ## Support
 

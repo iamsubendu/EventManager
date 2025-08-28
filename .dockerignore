@@ -1,0 +1,59 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# Dependencies
+event-manager/node_modules
+event-manager/.pnp
+event-manager/.pnp.js
+
+# Testing
+event-manager/coverage
+
+# Next.js
+event-manager/.next/
+event-manager/out/
+
+# Production
+event-manager/build
+
+# Misc
+.DS_Store
+*.pem
+
+# Debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Local env files
+.env*.local
+.env
+
+# Vercel
+.vercel
+
+# TypeScript
+event-manager/*.tsbuildinfo
+event-manager/next-env.d.ts
+
+# IDE
+.vscode
+.idea
+
+# OS
+Thumbs.db
+
+# Git
+.git
+.gitignore
+
+# Documentation (not needed in container)
+README.md
+SETUP.md
+NOTES.md
+ENTITIES.md
+Project.md
+
+# Docker
+Dockerfile*
+docker-compose*
+.dockerignore
